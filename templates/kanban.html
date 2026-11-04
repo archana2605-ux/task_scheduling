@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Kanban Board — TaskFlow Pro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Kanban Board</h1>
+        <p style="color: var(--text-secondary); margin-top: 4px; font-size: 14px;">
+            Drag and drop tasks between columns to update their workflow status in real time
+        </p>
+    </div>
+    <div>
+        <a href="/" class="btn-secondary" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+            <span>📋</span> List View
+        </a>
+    </div>
+</div>
+
+<div class="kanban-board">
+    <!-- Column: To Do -->
+    <div class="kanban-column glass-card">
+        <div class="kanban-column-header">
+            <span style="display: flex; align-items: center; gap: 8px;">
+                <span>📥</span> To Do
+            </span>
+            <span class="kanban-count">{{ todo_tasks|length }}</span>
+        </div>
+        <div class="kanban-tasks" data-status="todo">
+            {% for task in todo_tasks %}
+            <div class="kanban-task-card glass-card" data-task-id="{{ task.id }}" data-priority="{{ task.priority }}">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                    <div style="font-weight: 600; font-size: 14px; line-height: 1.4;">{{ task.name }}</div>
+                </div>
+                {% if task.description %}
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; max-height: 40px; overflow: hidden; text-overflow: ellipsis;">
+                    {{ task.description }}
+                </div>
+                {% endif %}
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 8px;">
+                    {% if task.category %}
+                    <span class="category-badge" style="background: {{ task.category.color }}22; color: {{ task.category.color }}; border: 1px solid {{ task.category.color }}44; font-size: 11px; padding: 2px 8px;">
+                        {{ task.category.icon }} {{ task.category.name }}
+                    </span>
+                    {% endif %}
+                    <span class="urgency-badge urgency-{{ task.urgency_label }}" style="font-size: 11px; padding: 2px 8px;">
+                        ⚡ {{ task.urgency_score }}
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                    <span>📅 {{ task.deadline.strftime('%b %d, %H:%M') }}</span>
+                    <span>P{{ task.priority }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Column: In Progress -->
+    <div class="kanban-column glass-card">
+        <div class="kanban-column-header">
+            <span style="display: flex; align-items: center; gap: 8px;">
+                <span>🔄</span> In Progress
+            </span>
+            <span class="kanban-count">{{ progress_tasks|length }}</span>
+        </div>
+        <div class="kanban-tasks" data-status="in_progress">
+            {% for task in progress_tasks %}
+            <div class="kanban-task-card glass-card" data-task-id="{{ task.id }}" data-priority="{{ task.priority }}">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                    <div style="font-weight: 600; font-size: 14px; line-height: 1.4;">{{ task.name }}</div>
+                </div>
+                {% if task.description %}
+                <div style="font-size: 12px; color: var(--text-secondary); margin-bottom: 8px; max-height: 40px; overflow: hidden; text-overflow: ellipsis;">
+                    {{ task.description }}
+                </div>
+                {% endif %}
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 8px;">
+                    {% if task.category %}
+                    <span class="category-badge" style="background: {{ task.category.color }}22; color: {{ task.category.color }}; border: 1px solid {{ task.category.color }}44; font-size: 11px; padding: 2px 8px;">
+                        {{ task.category.icon }} {{ task.category.name }}
+                    </span>
+                    {% endif %}
+                    <span class="urgency-badge urgency-{{ task.urgency_label }}" style="font-size: 11px; padding: 2px 8px;">
+                        ⚡ {{ task.urgency_score }}
+                    </span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                    <span>📅 {{ task.deadline.strftime('%b %d, %H:%M') }}</span>
+                    <span>P{{ task.priority }}</span>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    <!-- Column: Done -->
+    <div class="kanban-column glass-card">
+        <div class="kanban-column-header">
+            <span style="display: flex; align-items: center; gap: 8px;">
+                <span>✅</span> Done
+            </span>
+            <span class="kanban-count">{{ done_tasks|length }}</span>
+        </div>
+        <div class="kanban-tasks" data-status="done">
+            {% for task in done_tasks %}
+            <div class="kanban-task-card glass-card" data-task-id="{{ task.id }}" data-priority="{{ task.priority }}" style="opacity: 0.65;">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 8px;">
+                    <div style="font-weight: 600; font-size: 14px; line-height: 1.4; text-decoration: line-through;">{{ task.name }}</div>
+                </div>
+                <div style="display: flex; gap: 6px; align-items: center; flex-wrap: wrap; margin-bottom: 8px;">
+                    {% if task.category %}
+                    <span class="category-badge" style="background: {{ task.category.color }}22; color: {{ task.category.color }}; border: 1px solid {{ task.category.color }}44; font-size: 11px; padding: 2px 8px;">
+                        {{ task.category.icon }} {{ task.category.name }}
+                    </span>
+                    {% endif %}
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 11px; color: var(--text-muted);">
+                    <span>Completed</span>
+                    {% if task.completed_at %}
+                    <span>{{ task.completed_at.strftime('%b %d') }}</span>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_scripts %}
+<script src="https://cdn.jsdelivr.net/npm/sortablejs@latest/Sortable.min.js"></script>
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    initKanban();
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,32 @@
+[
+    {
+        "task": {
+            "task_id": 5,
+            "name": "drinking water",
+            "deadline": "2025-09-06T20:41:00",
+            "priority": 1,
+            "completed": false
+        },
+        "action": "deleted"
+    },
+    {
+        "task": {
+            "task_id": 1,
+            "name": "writing assignment",
+            "deadline": "2025-09-05T17:56:00",
+            "priority": 1,
+            "completed": false
+        },
+        "action": "deleted"
+    },
+    {
+        "task": {
+            "task_id": 4,
+            "name": "meeting",
+            "deadline": "2025-09-06T18:50:00",
+            "priority": 1,
+            "completed": false
+        },
+        "action": "deleted"
+    }
+]

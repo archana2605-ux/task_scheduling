@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block title %}500 — Server Error{% endblock %}
+
+{% block content %}
+<div class="empty-state glass-card" style="padding: 80px 20px;">
+    <div class="empty-icon">⚠️</div>
+    <h1 style="font-size: 32px; margin-top: 10px;">Something Went Wrong</h1>
+    <p style="margin-top: 12px; color: var(--text-secondary);">An unexpected internal server error occurred. Please try again shortly.</p>
+    <div style="margin-top: 24px;">
+        <a href="/" class="btn-primary" style="text-decoration: none; display: inline-block;">
+            ← Return to Dashboard
+        </a>
+    </div>
+</div>
+{% endblock %}
+

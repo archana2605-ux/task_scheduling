@@ -1,0 +1,60 @@
+{% extends "base.html" %}
+
+{% block title %}Activity Logs — TaskFlow Pro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Activity Logs</h1>
+        <p style="color: var(--text-secondary); margin-top: 4px; font-size: 14px;">
+            Immutable audit trail of all task creations, status updates, pomodoro focus sessions, and completions
+        </p>
+    </div>
+    <div>
+        <a href="/" class="btn-secondary" style="text-decoration: none;">
+            ← Back to Dashboard
+        </a>
+    </div>
+</div>
+
+<div class="glass-card" style="padding: 0; overflow-x: auto;">
+    {% if logs %}
+    <table class="logs-table">
+        <thead>
+            <tr>
+                <th style="width: 170px;">Timestamp</th>
+                <th style="width: 140px;">Action</th>
+                <th>Task Name</th>
+                <th>Details</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for log in logs %}
+            <tr>
+                <td style="color: var(--text-secondary); font-size: 13px; font-variant-numeric: tabular-nums;">
+                    {{ log.timestamp.strftime('%Y-%m-%d %H:%M') if log.timestamp else '—' }}
+                </td>
+                <td>
+                    <span class="log-action-badge log-{{ log.action }}">
+                        {{ log.action.replace('_', ' ') }}
+                    </span>
+                </td>
+                <td style="font-weight: 500;">
+                    {{ log.task_name or '—' }}
+                </td>
+                <td style="color: var(--text-secondary); font-size: 13px;">
+                    {{ log.details or '—' }}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div class="empty-state" style="padding: 40px 20px;">
+        <div class="empty-icon">📝</div>
+        <h3>No activity logged yet</h3>
+        <p style="margin-top: 8px;">Actions like adding tasks or completing them will appear here.</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

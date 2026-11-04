@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Review — TaskFlow Pro{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <div>
+        <h1 class="page-title">Business Review Console</h1>
+        <p style="color: var(--text-secondary); margin-top: 4px; font-size: 14px;">
+            Evaluate and approve or reject incoming organizational partnership requests
+        </p>
+    </div>
+    <div>
+        <a href="/business" class="btn-secondary" style="text-decoration: none;">
+            ← Business Form
+        </a>
+    </div>
+</div>
+
+{% if pending %}
+<div style="display: flex; flex-direction: column; gap: 16px;">
+    {% for req in pending %}
+    <div class="glass-card" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 20px;">
+        <div style="flex: 1; min-width: 280px;">
+            <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 6px;">
+                <h3 style="font-size: 18px; font-weight: 600;">{{ req.name }}</h3>
+                <span class="badge" style="background: rgba(255, 214, 0, 0.15); color: #FFD600; border: 1px solid rgba(255, 214, 0, 0.3);">
+                    Pending Review
+                </span>
+            </div>
+            <div style="color: var(--secondary); font-size: 13px; margin-bottom: 8px;">
+                📧 <a href="mailto:{{ req.contact_email }}" style="color: inherit; text-decoration: none;">{{ req.contact_email }}</a>
+            </div>
+            {% if req.description %}
+            <p style="font-size: 14px; color: var(--text-secondary); line-height: 1.5; margin-top: 6px;">
+                {{ req.description }}
+            </p>
+            {% endif %}
+            <div style="font-size: 12px; color: var(--text-muted); margin-top: 8px;">
+                Submitted: {{ req.submitted_at.strftime('%Y-%m-%d %H:%M') if req.submitted_at else '—' }}
+            </div>
+        </div>
+
+        <form method="POST" action="/admin/requests" style="display: flex; gap: 10px;">
+            <input type="hidden" name="request_id" value="{{ req.id }}">
+            <button type="submit" name="action" value="approve" class="btn-success" style="padding: 10px 18px;">
+                ✓ Approve
+            </button>
+            <button type="submit" name="action" value="reject" class="btn-danger" style="padding: 10px 18px;">
+                ✕ Reject
+            </button>
+        </form>
+    </div>
+    {% endfor %}
+</div>
+{% else %}
+<div class="empty-state glass-card">
+    <div class="empty-icon">🎉</div>
+    <h3>All caught up!</h3>
+    <p style="margin-top: 8px;">There are no pending business requests waiting for approval.</p>
+</div>
+{% endif %}
+{% endblock %}
+
